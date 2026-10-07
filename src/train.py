@@ -22,8 +22,15 @@ def train(
     eval_path: str = "data/holdout.csv",
 ) -> float:
     # Bonus 1: Ket noi DagsHub remote tracking neu bien moi truong ton tai
-    if os.environ.get("MLFLOW_TRACKING_URI") and os.environ.get("MLFLOW_TRACKING_PASSWORD"):
-        mlflow.set_tracking_uri(os.environ["MLFLOW_TRACKING_URI"])
+    remote_uri = os.environ.get("MLFLOW_TRACKING_URI")
+    token = os.environ.get("MLFLOW_TRACKING_PASSWORD") or "10fa6a0ff849128cd2398580fca400f2e203323d"
+    username = os.environ.get("MLFLOW_TRACKING_USERNAME") or "Bean624"
+
+    if remote_uri:
+        os.environ["MLFLOW_TRACKING_USERNAME"] = username
+        os.environ["MLFLOW_TRACKING_PASSWORD"] = token
+        os.environ["MLFLOW_TRACKING_TOKEN"] = token
+        mlflow.set_tracking_uri(remote_uri)
 
     # Đọc dữ liệu huấn luyện và đánh giá
     df_train = pd.read_csv(data_path)
@@ -45,7 +52,14 @@ def train(
     else:
         print(f"[DATA QUALITY] Ty le lop duong: {pos_ratio:.4f} (khop voi ty le tham chieu)")
 
-    with mlflow.start_run():
+    try:
+        run_context = mlflow.start_run()
+    except Exception as e:
+        print(f"[MLFLOW INFO] Khong the ket noi tracking server tu xa ({e}). Tu dong fallback sang local tracking.")
+        mlflow.set_tracking_uri("sqlite:///mlflow.db")
+        run_context = mlflow.start_run()
+
+    with run_context:
         # Ghi nhận các siêu tham số vào MLflow
         mlflow.log_params(params)
 
