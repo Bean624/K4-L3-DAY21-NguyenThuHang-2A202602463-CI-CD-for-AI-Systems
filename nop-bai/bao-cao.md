@@ -13,11 +13,11 @@ HƯỚNG DẪN - đọc rồi XÓA TOÀN BỘ các khối chú thích này sau k
 
 | | |
 |---|---|
-| Họ và tên | ___ |
-| MSSV | ___ |
+| Họ và tên | Nguyễn Thu Hằng |
+| MSSV | 2A202602463 |
 | Lớp / Khóa | K4 |
-| Repo GitHub | https://github.com/___/___ |
-| Ngày nộp | ___ |
+| Repo GitHub | https://github.com/Bean624/K4-L3-DAY21-NguyenThuHang-2A202602463-CI-CD-for-AI-Systems |
+| Ngày nộp | 07/10/2026 |
 
 ---
 
